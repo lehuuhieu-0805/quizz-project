@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DataQuizzServiceImpl implements DataQuizzService{
+public class DataQuizzServiceImpl implements DataQuizzService {
     @Autowired
     private DataQuizzRepository dataQuizzRepository;
 
