@@ -1,12 +1,9 @@
 package com.example.quizzproject.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class DataQuizz {
+public class DataQuiz {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -15,17 +12,25 @@ public class DataQuizz {
     private String answerB;
     private String answerC;
     private String answerD;
+    private String correct_Answer;
+    private float point;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_Courses_Quiz", referencedColumnName = "id")
+    private CoursesQuiz id_Courses_Quiz;
 
-    public DataQuizz() {
+    public DataQuiz() {
     }
 
-    public DataQuizz(int id, String question, String answerA, String answerB, String answerC, String answerD) {
+    public DataQuiz(int id, String question, String answerA, String answerB, String answerC, String answerD, String correct_Answer, float point, CoursesQuiz id_Courses_Quiz) {
         this.id = id;
         this.question = question;
         this.answerA = answerA;
         this.answerB = answerB;
         this.answerC = answerC;
         this.answerD = answerD;
+        this.correct_Answer = correct_Answer;
+        this.point = point;
+        this.id_Courses_Quiz = id_Courses_Quiz;
     }
 
     public int getId() {
@@ -75,5 +80,31 @@ public class DataQuizz {
     public void setAnswerD(String answerD) {
         this.answerD = answerD;
     }
+
+    public String getCorrect_Answer() {
+        return correct_Answer;
+    }
+
+    public void setCorrect_Answer(String correct_Answer) {
+        this.correct_Answer = correct_Answer;
+    }
+
+    public float getPoint() {
+        return point;
+    }
+
+    public void setPoint(float point) {
+        this.point = point;
+    }
+
+    public CoursesQuiz getId_Courses_Quiz() {
+        return id_Courses_Quiz;
+    }
+
+    public void setId_Courses_Quiz(CoursesQuiz id_Courses_Quiz) {
+        this.id_Courses_Quiz = id_Courses_Quiz;
+    }
 }
+
+
 
