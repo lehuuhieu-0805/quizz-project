@@ -14,12 +14,12 @@ public class DataQuizzServiceImpl implements DataQuizzService {
     private DataQuizzRepository dataQuizzRepository;
 
     @Override
-    public List<DataQuiz> getAll() {
+    public List<DataQuiz> getAllQuestion() {
         return dataQuizzRepository.findAll();
     }
 
     @Override
-    public DataQuiz saveData(DataQuiz dataQuiz) {
+    public DataQuiz saveQuestion(DataQuiz dataQuiz) {
         return dataQuizzRepository.save(dataQuiz);
     }
 

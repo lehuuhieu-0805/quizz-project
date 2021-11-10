@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin")
@@ -18,7 +19,7 @@ public class AdminController {
     @Autowired
     private CoursesQuizService coursesQuizService;
 
-    @PostMapping("/addcourse")
+    @PostMapping("/addCourse")
     public String addCourses(@RequestBody CoursesQuiz coursesQuiz) {
         coursesQuizService.saveCourses(coursesQuiz);
         return "new course is added";
@@ -29,38 +30,48 @@ public class AdminController {
         return coursesQuizService.getAllCourses();
     }
 
-    @GetMapping("/deletecourse/{id}")
+    @GetMapping("/course/{id}")
+    public Optional<CoursesQuiz> getCourseById(@PathVariable int id){
+        return coursesQuizService.getCoursesById(id);
+    }
+
+    @DeleteMapping("/deleteCourse/{id}")
     public String deleteCourse(@PathVariable int id) {
         coursesQuizService.removeCourses(id);
         return "course is deleted";
     }
 
-    @PutMapping("/updatecourse/{id}")
+    @PutMapping("/updateCourse/{id}")
     public String updateCourse(@RequestBody CoursesQuiz coursesQuiz) {
         coursesQuizService.saveCourses(coursesQuiz);
         return "course is updated";
     }
 
-    @PostMapping("/add")
+    @GetMapping("/question")
+    public List<DataQuiz> getAllQuestion() {
+        return dataQuizzService.getAllQuestion();
+    }
+
+    @GetMapping("/question/{id}")
+    public Optional<DataQuiz> getQuestionById(@PathVariable int id){
+        return dataQuizzService.getQuestionById(id);
+    }
+
+    @PostMapping("/addQuestion")
     public String add(@RequestBody DataQuiz dataQuiz) {
-        dataQuizzService.saveData(dataQuiz);
+        dataQuizzService.saveQuestion(dataQuiz);
         return "new question is added";
     }
 
-    @GetMapping("/quizz")
-    public List<DataQuiz> getAll() {
-        return dataQuizzService.getAll();
-    }
-
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/deleteQuestion/{id}")
     public String deleteQuestion(@PathVariable int id) {
         dataQuizzService.removeQuestion(id);
         return "question is deleted";
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/updateQuestion/{id}")
     public String updateQuestion(@RequestBody DataQuiz dataQuiz) {
-        dataQuizzService.saveData(dataQuiz);
+        dataQuizzService.saveQuestion(dataQuiz);
         return "question is updated";
     }
 
