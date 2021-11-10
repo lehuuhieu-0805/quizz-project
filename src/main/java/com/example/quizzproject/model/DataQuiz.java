@@ -14,7 +14,7 @@ public class DataQuiz {
     private String answerD;
     private String correct_Answer;
     private float point;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_Courses_Quiz", referencedColumnName = "id")
     private CoursesQuiz id_Courses_Quiz;
 
