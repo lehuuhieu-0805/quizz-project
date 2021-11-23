@@ -33,7 +33,6 @@ public class AdminController {
     }
 
     @GetMapping("/courses/{name}")
-
     public List<CoursesQuiz> getCourseByName(@RequestParam String name){
         if(name!=null) {
             return coursesQuizService.getCoursesByName(name);
