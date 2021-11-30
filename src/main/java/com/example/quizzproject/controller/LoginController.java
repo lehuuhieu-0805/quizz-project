@@ -23,24 +23,27 @@ public class LoginController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user){
         String userRe = user.getUsername();
-        String userDb = (userService.findByUsername(user.getUsername())).getUsername();
-        if(userDb != null && userDb.equals(userRe)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username đã tồn tại");
-        }else {
+        User userDb = userService.findByUsername(userRe);
+        if(userDb == null){
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
         }
+        else if(userDb != null && (userDb.getUsername()).equals(userRe)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username đã tồn tại");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Oke");
     }
 
     @PutMapping("/updateUser/{id}")
     public User updateUser(@PathVariable int id, @RequestBody User user) {
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return userService.createUser(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user){
-        user = userService.findByUsername(user.getUsername());
-        if (null == user || !new BCryptPasswordEncoder().matches(user.getPassword(), user.getPassword())) {
+    public ResponseEntity<?> login(@RequestBody User userLogin){
+        User user = userService.findByUsername(userLogin.getUsername());
+        if (null == user || !new BCryptPasswordEncoder().matches(userLogin.getPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("tài khoản hoặc mật khẩu không chính xác");
         }
         Token token = new Token();
