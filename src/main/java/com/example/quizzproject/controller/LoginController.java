@@ -3,7 +3,6 @@ package com.example.quizzproject.controller;
 import com.example.quizzproject.entity.JwtUtil;
 import com.example.quizzproject.model.Token;
 import com.example.quizzproject.model.User;
-import com.example.quizzproject.model.UserPrincipal;
 import com.example.quizzproject.service.TokenService;
 import com.example.quizzproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private JwtUtil jwtUtil;
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user){
         String userRe = user.getUsername();
@@ -29,21 +32,21 @@ public class LoginController {
         }
     }
 
-    @Autowired
-    private TokenService tokenService;
+    @PutMapping("/updateUser/{id}")
+    public User updateUser(@PathVariable int id, @RequestBody User user) {
+        return userService.createUser(user);
+    }
 
-    @Autowired
-    private JwtUtil jwtUtil;
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user){
-        UserPrincipal userPrincipal = userService.findByUsername(user.getUsername());
-        if (null == user || !new BCryptPasswordEncoder().matches(user.getPassword(), userPrincipal.getPassword())) {
+        user = userService.findByUsername(user.getUsername());
+        if (null == user || !new BCryptPasswordEncoder().matches(user.getPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("tài khoản hoặc mật khẩu không chính xác");
         }
         Token token = new Token();
-        token.setToken(jwtUtil.generateToken(userPrincipal));
+        token.setToken(jwtUtil.generateToken(user));
         token.setTokenExpDate(jwtUtil.generateExpirationDate());
-        token.setCreatedBy(userPrincipal.getUserId());
+        token.setCreatedBy(user.getId());
         tokenService.createToken(token);
         return ResponseEntity.ok(token.getToken());
     }

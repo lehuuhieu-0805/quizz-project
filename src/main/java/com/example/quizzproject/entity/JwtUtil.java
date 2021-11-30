@@ -1,17 +1,14 @@
 package com.example.quizzproject.entity;
 
-import com.example.quizzproject.model.UserPrincipal;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.quizzproject.model.User;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 import java.sql.Date;
 import java.text.ParseException;
 
@@ -22,7 +19,7 @@ public class JwtUtil {
     private static final String USER = "user";
     private static final String SECRET = "daycaidaynaychinhlachukycuabandungdelorangoaidaynhenguyhiemchetnguoidayhihihi";
 
-    public String generateToken(UserPrincipal user) {
+    public String generateToken(User user) {
         String token = null;
         try {
             JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();

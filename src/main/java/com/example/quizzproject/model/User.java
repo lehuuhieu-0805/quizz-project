@@ -1,23 +1,77 @@
 package com.example.quizzproject.model;
 
-import com.example.quizzproject.entity.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-@Getter
-@Setter
-@Entity
-@Table(name = "t_user")
-public class User extends BaseEntity {
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Table(name = "user")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String username;
-
+    private String fullname;
+    private String image;
     private String password;
+    private String role;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinTable(name = "t_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private Set<Role> roles = new HashSet<>();
+    public User() {
+    }
 
+    public User(int id, String username, String fullname, String image, String password, String role) {
+        this.id = id;
+        this.username = username;
+        this.fullname = fullname;
+        this.image = image;
+        this.password = password;
+        this.role = role;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
