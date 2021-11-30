@@ -1,10 +1,9 @@
 package com.example.quizzproject.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-@Table(name = "user")
+import javax.persistence.*;
+
+@Entity
+@Table(name = "tblUser")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
