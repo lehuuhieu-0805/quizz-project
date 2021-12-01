@@ -1,6 +1,7 @@
 package com.example.quizzproject.controller;
 
 import com.example.quizzproject.entity.JwtUtil;
+import com.example.quizzproject.entity.LoginResponse;
 import com.example.quizzproject.model.Token;
 import com.example.quizzproject.model.User;
 import com.example.quizzproject.service.TokenService;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.xml.ws.Response;
 
 @RestController
 @CrossOrigin
@@ -31,13 +34,22 @@ public class LoginController {
         else if(userDb != null && (userDb.getUsername()).equals(userRe)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username đã tồn tại");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Oke");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error");
     }
 
     @PutMapping("/updateUser/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody User user) {
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return userService.createUser(user);
+        return ResponseEntity.ok(userService.createUser(user));
+    }
+
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<?> findById(@PathVariable int id){
+        User user = userService.findById(id);
+        if(user == null){
+            return (ResponseEntity<?>) ResponseEntity.notFound();
+        }
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")
@@ -51,7 +63,8 @@ public class LoginController {
         token.setTokenExpDate(jwtUtil.generateExpirationDate());
         token.setCreatedBy(user.getId());
         tokenService.createToken(token);
-        return ResponseEntity.ok(token.getToken());
+        LoginResponse loginResponse = new LoginResponse(user.getId(), user.getUsername(), token.getToken());
+        return ResponseEntity.ok(loginResponse);
     }
 
 }

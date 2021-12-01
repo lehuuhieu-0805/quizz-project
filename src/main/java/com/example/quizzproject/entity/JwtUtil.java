@@ -6,6 +6,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.hibernate.id.AbstractUUIDGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,14 +17,15 @@ import java.text.ParseException;
 @Component
 public class JwtUtil {
     private static Logger logger = LoggerFactory.getLogger(JwtUtil.class);
-    private static final String USER = "user";
     private static final String SECRET = "daycaidaynaychinhlachukycuabandungdelorangoaidaynhenguyhiemchetnguoidayhihihi";
 
     public String generateToken(User user) {
         String token = null;
         try {
             JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
-            builder.claim(USER, user);
+            builder.claim("Role", user.getRole());
+            builder.claim("UserId", user.getId());
+            builder.claim("UserName", user.getUsername());
             builder.expirationTime(generateExpirationDate());
             JWTClaimsSet claimsSet = builder.build();
             SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
