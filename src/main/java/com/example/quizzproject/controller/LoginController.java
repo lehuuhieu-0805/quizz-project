@@ -43,7 +43,7 @@ public class LoginController {
         if(user.getUsername() != username){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found User");
         }
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(user.getPassword());
         return ResponseEntity.ok(userService.createUser(user));
     }
 
@@ -59,7 +59,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User userLogin){
         User user = userService.findByUsername(userLogin.getUsername());
-        if (null == user || !new BCryptPasswordEncoder().matches(userLogin.getPassword(), user.getPassword())) {
+        if (null == user || !(userLogin.getPassword() != user.getPassword())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("tài khoản hoặc mật khẩu không chính xác");
         }
         Token token = new Token();
