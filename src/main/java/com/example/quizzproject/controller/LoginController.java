@@ -58,7 +58,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User userLogin){
         User user = userService.findByUsername(userLogin.getUsername());
-        if (null == user || !(userLogin.getPassword() != user.getPassword())) {
+        if (null == user || (userLogin.getPassword() != user.getPassword())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("tài khoản hoặc mật khẩu không chính xác");
         }
         Token token = new Token();
