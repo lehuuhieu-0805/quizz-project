@@ -5,5 +5,4 @@ import com.example.quizzproject.model.User;
 public interface UserService {
     User createUser(User user);
     User findByUsername(String username);
-    User findById(int id);
 }

@@ -44,9 +44,9 @@ public class LoginController {
         return ResponseEntity.ok(userService.createUser(user));
     }
 
-    @GetMapping("/findById/{id}")
-    public ResponseEntity<?> findById(@PathVariable int id){
-        User user = userService.findById(id);
+    @GetMapping("/findByUserName/{username}")
+    public ResponseEntity<?> findById(@PathVariable String username){
+        User user = userService.findByUsername(username);
         if(user == null){
             return (ResponseEntity<?>) ResponseEntity.notFound();
         }
