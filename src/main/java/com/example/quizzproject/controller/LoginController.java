@@ -38,8 +38,11 @@ public class LoginController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error");
     }
 
-    @PutMapping("/updateUser/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody User user) {
+    @PutMapping("/updateUser/{username}")
+    public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody User user) {
+        if(user.getUsername() != username){
+            return (ResponseEntity<?>) ResponseEntity.badRequest();
+        }
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return ResponseEntity.ok(userService.createUser(user));
     }
