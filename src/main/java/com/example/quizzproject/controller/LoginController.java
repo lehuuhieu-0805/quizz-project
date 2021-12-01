@@ -64,7 +64,7 @@ public class LoginController {
         token.setTokenExpDate(jwtUtil.generateExpirationDate());
         token.setCreatedBy(user.getId());
         tokenService.createToken(token);
-        LoginResponse loginResponse = new LoginResponse(user.getId(), user.getUsername(), token.getToken());
+        LoginResponse loginResponse = new LoginResponse(user.getId(), user.getUsername(), user.getRole(), token.getToken());
         return ResponseEntity.ok(loginResponse);
     }
 
