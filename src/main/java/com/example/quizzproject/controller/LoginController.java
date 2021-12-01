@@ -28,6 +28,7 @@ public class LoginController {
         String userRe = user.getUsername();
         User userDb = userService.findByUsername(userRe);
         if(userDb == null){
+            user.setRole("User");
             user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
         }
