@@ -39,11 +39,11 @@ public class LoginController {
     }
 
     @PutMapping("/updateUser/{username}")
-    public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody User user) {
-        if(user.getUsername() != username){
+    public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody User newUser) {
+        User user = userService.findByUsername(username);
+        if(user == null || !newUser.getUsername().equals(username)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found User");
         }
-        user.setPassword(user.getPassword());
         return ResponseEntity.ok(userService.createUser(user));
     }
 
