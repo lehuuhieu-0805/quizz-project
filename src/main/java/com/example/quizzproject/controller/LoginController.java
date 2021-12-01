@@ -41,7 +41,7 @@ public class LoginController {
     @PutMapping("/updateUser/{username}")
     public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody User user) {
         if(user.getUsername() != username){
-            return (ResponseEntity<?>) ResponseEntity.badRequest();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found User");
         }
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return ResponseEntity.ok(userService.createUser(user));
@@ -51,7 +51,7 @@ public class LoginController {
     public ResponseEntity<?> findById(@PathVariable String username){
         User user = userService.findByUsername(username);
         if(user == null){
-            return (ResponseEntity<?>) ResponseEntity.notFound();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found User");
         }
         return ResponseEntity.ok(user);
     }
