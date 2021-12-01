@@ -29,7 +29,6 @@ public class LoginController {
         User userDb = userService.findByUsername(userRe);
         if(userDb == null){
             user.setRole("User");
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
         }
         else if(userDb != null && (userDb.getUsername()).equals(userRe)) {
@@ -44,7 +43,7 @@ public class LoginController {
         if(user == null || !newUser.getUsername().equals(username)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found User");
         }
-        return ResponseEntity.ok(userService.createUser(user));
+        return ResponseEntity.ok(userService.createUser(newUser));
     }
 
     @GetMapping("/findByUserName/{username}")
