@@ -49,9 +49,5 @@ jobs:
         with:
           app-name: 'quiz-project'
           slot-name: 'Production'
-<<<<<<< HEAD
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D18CBC4E05B24E388D9FFF731201A6EB }}
-=======
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5D93A35969A84AEB8FD9207A01BF0836 }}
->>>>>>> 51d91034105c0c0250b70ae1ea86b6477e2ace82
           package: '*.jar'
