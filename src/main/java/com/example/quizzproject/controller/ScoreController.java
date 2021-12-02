@@ -22,8 +22,8 @@ public class ScoreController {
     @GetMapping("/score/{id}")
     public ResponseEntity<?> getScoreByUserId(@PathVariable int id){
          List<Score> score = scoreService.getScoreByUserId(id);
-        if(score == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found Score");
+        if(score.size() == 0){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
         }
         return ResponseEntity.ok(score);
     }
