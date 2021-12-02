@@ -29,7 +29,6 @@ public class LoginController {
         User userDb = userService.findByUsername(userRe);
         if(userDb == null){
             user.setRole("User");
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
         }
         else if(userDb != null && (userDb.getUsername()).equals(userRe)) {
@@ -39,12 +38,12 @@ public class LoginController {
     }
 
     @PutMapping("/updateUser/{username}")
-    public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody User user) {
-        if(user.getUsername() != username){
+    public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody User newUser) {
+        User user = userService.findByUsername(username);
+        if(user == null || !newUser.getUsername().equals(username)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found User");
         }
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return ResponseEntity.ok(userService.createUser(user));
+        return ResponseEntity.ok(userService.createUser(newUser));
     }
 
     @GetMapping("/findByUserName/{username}")
@@ -59,7 +58,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User userLogin){
         User user = userService.findByUsername(userLogin.getUsername());
-        if (null == user || !new BCryptPasswordEncoder().matches(userLogin.getPassword(), user.getPassword())) {
+        if (user == null || !userLogin.getPassword().equals(user.getPassword())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("tài khoản hoặc mật khẩu không chính xác");
         }
         Token token = new Token();

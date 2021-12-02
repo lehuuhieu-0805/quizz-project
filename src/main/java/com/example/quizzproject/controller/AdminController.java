@@ -34,12 +34,21 @@ public class AdminController {
 
     @GetMapping("/courses/{name}")
 
-    public List<CoursesQuiz> getCourseByName(@RequestParam String name){
+    public List<CoursesQuiz> getCourseByName(@PathVariable String name){
         if(name!=null) {
             return coursesQuizService.getCoursesByName(name);
         }else {
             return coursesQuizService.getAllCourses();
         }
+    }
+
+    @GetMapping("/getCourseById/{id}")
+    public ResponseEntity<?> getCourseById(@PathVariable int id){
+        Optional<CoursesQuiz> course = coursesQuizService.getCoursesById(id);
+        if(course.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found Course");
+        }
+        return ResponseEntity.ok(course);
     }
 
     @GetMapping("/course/{id}")
