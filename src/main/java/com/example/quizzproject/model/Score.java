@@ -1,6 +1,8 @@
 package com.example.quizzproject.model;
 
 import javax.persistence.*;
+import java.sql.Date;
+
 @Entity
 @Table(name = "tblScore")
 public class Score {
@@ -8,6 +10,7 @@ public class Score {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private float score;
+    private String timeSubmit;
     @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id")
     private User user;
@@ -18,11 +21,20 @@ public class Score {
     public Score() {
     }
 
-    public Score(int id, float score, User user, CoursesQuiz coursesQuiz) {
+    public Score(int id, float score, User user, String timeSubmit, CoursesQuiz coursesQuiz) {
         this.id = id;
         this.score = score;
         this.user = user;
+        this.timeSubmit = timeSubmit;
         this.coursesQuiz = coursesQuiz;
+    }
+
+    public String getTimeSubmit() {
+        return timeSubmit;
+    }
+
+    public void setTimeSubmit(String timeSubmit) {
+        this.timeSubmit = timeSubmit;
     }
 
     public int getId() {
